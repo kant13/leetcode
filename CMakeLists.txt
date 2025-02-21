@@ -14,23 +14,13 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-if(TARGET GTest::gtest_main)
-  message("Target was found")
-endif()
-
 enable_testing()
 include(GoogleTest)
 
-add_executable(fizzBuzz fizzBuzz.cpp)
-target_link_libraries(fizzBuzz
-  GTest::gtest_main
-  GTest::gtest
-)
-gtest_discover_tests(fizzBuzz)
-
-add_executable(reverseString reverseString.cpp)
-target_link_libraries(reverseString
-  GTest::gtest_main
-  GTest::gtest
-)
-gtest_discover_tests(reverseString)
+file(GLOB SRC_FILES *.cpp)
+foreach(SRC_FILE ${SRC_FILES})
+    get_filename_component(IT_TARGET ${SRC_FILE} NAME_WLE)
+    add_executable(${IT_TARGET} ${SRC_FILE})
+    target_link_libraries(${IT_TARGET} GTest::gtest_main)
+    gtest_discover_tests(${IT_TARGET})
+endforeach()
