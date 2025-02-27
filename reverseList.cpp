@@ -34,17 +34,19 @@ struct ListNode {
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        if (!head || !head->next) {
-            return head;
+        ListNode* dummy = new ListNode();
+        ListNode* curr = head;
+        while (curr) {
+            ListNode* next = curr->next;
+            curr->next = dummy->next;
+            dummy->next = curr;
+            curr = next;
         }
-        ListNode* newHead = reverseList(head->next);
-        head->next->next = head;
-        head->next = nullptr;
-        return newHead;
+        return dummy->next;
     }
 };
 
-vector<int> print(ListNode* head) {
+static vector<int> print(ListNode* head) {
     vector<int> ret;
     ListNode* curr = head;
     while (curr) {
